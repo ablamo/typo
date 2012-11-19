@@ -19,7 +19,10 @@ module NavigationHelpers
       '/admin/content/new'
     when /^the logout page$/
       '/accounts/logout'
-
+    when /^the edit page for article titled "([^"]*)"$/ 
+        id = Article.find_by_title("#{$1}").id
+        "/admin/content/edit/#{id}"
+	#admin_content_path(:action => "#{$1}", Article.find_by_title("#{$2}"))
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -5,24 +5,23 @@ Feature: Merge Blog Articles
 
   Background:
     Given the blog is set up
-    And two articles are published
 
   Scenario: Merge articles not shown when logged as publisher
     Given I am logged into the admin panel as publisher
-    And I go to the home page
-    When I follow "Article 1"
+    And I create an article with title "Article 1" and body "This is the body of article 1"
+    When I am on the edit page for article titled "Article 1"
     Then I should not see "Merge Articles"
 
-  Scenario: Merge articles not shown when logged as contributor
-    Given I am logged into the admin panel as contributor
-    And I go to the home page
-    When I follow "Article 1"
-    Then I should not see "Merge Articles"
+#  Scenario: Merge articles not shown when logged as contributor
+#    Given I am logged into the admin panel as contributor
+#    And I create an article with title "Article 1" and body "This is the body of article 1"
+#    When I am on the edit page for article titled "Article 1"
+#    Then I should not see "Merge Articles"
 
   Scenario: Merge articles is shown when logged as admin
     Given I am logged into the admin panel as admin
-    And I go to the home page
-    When I follow "Article 1"
+    And I create an article with title "Article 1" and body "This is the body of article 1"
+    When I am on the edit page for article titled "Article 1"
     Then I should see "Merge Articles"
 
 
