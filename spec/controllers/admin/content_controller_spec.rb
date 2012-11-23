@@ -606,6 +606,37 @@ describe Admin::ContentController do
         response.body.should == '<ul class="unstyled" id="autocomplete"><li>bar</li><li>bazz</li></ul>'
       end
     end
+   
+    describe 'merge two articles' do
+      def base_article(options={})
+        { :title => "posted via tests!",
+          :body => "A good body",
+          :allow_comments => '1',
+          :allow_pings => '1' }.merge(options)
+      end
+        before :each do
+          @article1= Factory(:article, :title => 'Title 1', :body => 'This is the body of article 1')
+          @article2= Factory(:article, :title => 'Title 2', :body => 'This is the body of article 2')
+        end
+        it 'should call the model method that do the merge action' do
+          Article.stub(:find).and_return(@article1)
+          @article1.stub(:id).and_return('1')
+	  @article2.stub(:id).and_return('2')
+          @article1.should_receive(:merge_with).with('2').and_return(@fake_article)
+          art_id = @article1.id
+          post :admin_content, {:action => 'merge', :id => @article1}, {:merge_with => '2'}        
+        end
+        it 'should select the Merge Results template for rendering' do
+        end
+        it 'should make the new article available to that template' do
+        end
+        it 'should make the movie title available to that template' do
+        end
+
+
+
+
+    end
 
   end
 

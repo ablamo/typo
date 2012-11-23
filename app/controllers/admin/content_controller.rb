@@ -113,6 +113,26 @@ class Admin::ContentController < Admin::BaseController
     render :text => nil
   end
 
+  def merge
+    logger.debug("ANTONIO: current user: " + current_user.admin?.to_s)
+    unless current_user.admin?
+      redirect_to :action => 'index'
+      flash[:error] = _("Error, you are not allowed to perform this action")
+      return      
+    end
+    unless params.has_key? :merge_with
+      logger.debug("ANTONIO: empti merge_with")
+      flash[:error] = _("Error, you must inform the article to merge with")
+      redirect_to :controller => 'admin/content', :action => 'edit', :id => "#{params[:id]}"
+      return
+    end
+    logger.debug("ANTONIO: all test ok, start working with: " + params.to_S)
+    @article = Article.find(params[:id])
+    new_article = @article.merge_with(params[:merge_with])
+    redirect_to :controller => '/admin/content', :action => 'edit', :id => new_article.id
+  end
+
+
   protected
 
   def get_fresh_or_existing_draft_for_article
@@ -240,4 +260,6 @@ class Admin::ContentController < Admin::BaseController
   def setup_resources
     @resources = Resource.by_created_at
   end
+
+
 end
