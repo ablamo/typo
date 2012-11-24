@@ -126,6 +126,7 @@ class Admin::ContentController < Admin::BaseController
     end
     @article = Article.find(params[:id])
     new_article = @article.merge_with(params[:merge_with])
+    @article.reload.destroy
     redirect_to :controller => '/admin/content', :action => 'edit', :id => new_article.id
   end
 

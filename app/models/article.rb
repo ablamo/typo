@@ -437,6 +437,8 @@ class Article < Content
       one_comment.article_id = merged_article.id
       one_comment.save!
     end
+    partner_article.reload
+    partner_article.destroy
     return merged_article
   end
 # ANTONIO: My changes end here
