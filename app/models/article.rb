@@ -415,7 +415,31 @@ class Article < Content
   def access_by?(user)
     user.admin? || user_id == user.id
   end
-
+# ANTONIO: My changes begin here
+  def merge_with(merge_with_id)
+    partner_article = Article.find(merge_with_id)
+    merged_article = Article.new
+    merged_article.body           = self.body + partner_article.body
+    merged_article.title          = self.title
+    merged_article.published      = self.published
+    merged_article.author         = self.author
+    merged_article.published_at   = Time.now
+    merged_article.user           = self.user
+    merged_article.allow_comments = self.allow_comments
+    merged_article.allow_pings    = self.allow_pings
+    merged_article.text_filter    = self.text_filter
+    merged_article.save
+    self.comments.each do |one_comment|
+      one_comment.article_id = merged_article.id
+      one_comment.save!
+    end
+    partner_article.comments.each do |one_comment|
+      one_comment.article_id = merged_article.id
+      one_comment.save!
+    end
+    return merged_article
+  end
+# ANTONIO: My changes end here
   protected
 
   def set_published_at
