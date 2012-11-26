@@ -2,7 +2,7 @@
 
 <div class='left_form'>
 
-  <%= form_tag :action=>"edit" , :id => "#{@category.nil? ? 'new_category_form' : @category.id}" do %>
+  <%= form_tag :action=>"edit" , :id => "#{@category.nil? ? 'new' : @category.id}" do %>
   <%= error_messages_for 'category' %>
   <div class='clearfix'>
     <label for="category_name"><%= _("Name")%></label>
